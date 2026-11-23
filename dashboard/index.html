@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to the board</a>
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">TOKEN LAUNCH RADAR &middot; MODEL radar-2</p>
+    <h1>Which protocol launches next — and what would it be worth?</h1>
+    <p class="lede">Every protocol DefiLlama tracks that <strong>records no token</strong>, ranked by an implied value priced from the market itself. Click any row for its model maths and a 6-step farm plan with costs and times.</p>
+    <div class="stats" id="stats"></div>
+    <p class="warn" id="livecheck"></p>
+  </div>
+</header>
+<main class="wrap">
+  <section class="controls" aria-label="Filters">
+    <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search protocols">
+    <select id="cat" aria-label="Filter by category"><option value="">All categories</option></select>
+    <select id="chain" aria-label="Filter by chain"><option value="">All chains</option></select>
+    <select id="sort" aria-label="Sort board">
+      <option value="implied">Sort: implied value ↓</option>
+      <option value="tvl">Sort: TVL ↓</option>
+      <option value="growth">Sort: 7-day growth ↓</option>
+      <option value="age">Sort: oldest first</option>
+    </select>
+    <label class="check"><input type="checkbox" id="watchonly"> Watchlist only</label>
+    <button id="reset" type="button">Reset</button>
+  </section>
+  <p class="count" id="count"></p>
+  <div class="layout">
+    <section class="boardwrap">
+      <table id="board">
+        <thead><tr><th>#</th><th>Protocol</th><th>Category</th><th>Chains</th><th class="num">TVL</th><th class="num">7d</th><th class="num">Implied value</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p class="empty" id="empty" hidden>No protocol matches these filters.</p>
+    </section>
+    <aside class="detail" id="detail" aria-live="polite"></aside>
+  </div>
+  <section class="tabs">
+    <h2>Live-token comparables — the market the model is priced from</h2>
+    <p>These protocols already trade. The board never ranks them; their market cap / TVL is what prices each category. Median ratios by category are in Methodology.</p>
+    <table id="livetab">
+      <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">Mcap / TVL</th></tr></thead>
+      <tbody id="liverows"></tbody>
+    </table>
+  </section>
+  <section class="method" id="method">
+    <h2>Methodology — how the number is made</h2>
+    <p><strong>Implied value = TVL × category multiple × growth multiplier × maturity multiplier.</strong></p>
+    <ul>
+      <li><strong>Category multiple:</strong> median market-cap / TVL of the snapshot&rsquo;s own live-token protocols in the same category, shrunk toward the global median 0.214 with prior weight 3. Categories with fewer than 3 live comparables use the global median — a single comparable at 2.98&times; (Risk Curators) or 400&times; (Prediction Market) never sets a price.</li>
+      <li><strong>Growth:</strong> 7-day TVL change clamped to −50%…+100%, weight 0.6. <strong>Maturity:</strong> 0.65 + min(age, 1095 days) / 1095 × 0.35; unknown listing date counts as 365 days.</li>
+      <li><strong>Scope:</strong> 758 protocols in the sealed snapshot (DefiLlama, 2026-11-14, floor $5M). The board ranks all 40 watchlist protocols (TVL ≥ $50M, no token recorded, not a wrapped/staked/bridged product) plus the 160 largest clean pre-token protocols outside the watchlist — the early radar, including clean protocols above the floor the watchlist leaves out. Live-token protocols are shown apart, never ranked.</li>
+      <li><strong>Honesty:</strong> &ldquo;records no token&rdquo; means DefiLlama records none — it is not proof a token does not exist. Implied value is this radar&rsquo;s own claim from the snapshot&rsquo;s figures; it does not predict whether or when a token launches.</li>
+    </ul>
+    <table id="comps"><thead><tr><th>Category</th><th class="num">Live comparables</th><th class="num">Median mcap / TVL</th><th class="num">Multiple used</th></tr></thead><tbody id="comprows"></tbody></table>
+    <p class="src">Sources: sealed snapshot, DefiLlama protocols API, fetched 2026-11-14T01:18:33Z. Live re-check 2026-11-23 in the banner above. No network is used by this page; all data is embedded.</p>
+  </section>
+</main>
+<footer class="wrap"><p>Token Radar · model radar-2 · snapshot 2026-11-14 · Built for the make.fun token-radar-01 bounty. Not investment advice.</p></footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
